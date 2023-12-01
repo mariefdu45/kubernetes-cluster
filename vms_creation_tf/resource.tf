@@ -5,7 +5,9 @@ variable "vsphere_server" {}
 variable "vsphere_datacenter" {}
 variable "vsphere_datastore" {}
 variable "vsphere_compute_cluster" {}
-variable "system_vm_count" {}
+variable "system_vm_count" {
+  type = number
+}
 variable "vsphere_network" {}
 variable "vsphere_virtual_machine_template" {}
 variable "system_name_prefix" {}
@@ -23,7 +25,7 @@ variable "system_disk2_size" {}
 
 # Virtual Machine Resource
 resource "vsphere_virtual_machine" "server-instance" {
-  count = data.system_vm_count
+  count = var.system_vm_count
   # System
   #firmware  = "efi"
   guest_id  = data.vsphere_virtual_machine.template.guest_id
