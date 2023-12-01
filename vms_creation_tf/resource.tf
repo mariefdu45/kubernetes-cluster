@@ -25,7 +25,7 @@ variable "system_disk2_size" {}
 
 # Virtual Machine Resource
 resource "vsphere_virtual_machine" "server-instance" {
-  count = var.system_vm_count
+  count = var.system_vm_count   # ou encore count = "${var.system_vm_count}"
   # System
   #firmware  = "efi"
   guest_id  = data.vsphere_virtual_machine.template.guest_id
