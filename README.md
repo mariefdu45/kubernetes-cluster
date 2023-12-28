@@ -1,26 +1,13 @@
 # kubernetes-cluster
-This repository is for installing a vanilla K8S cluster on vsphere in an Infrastructure as code way (IaC)
+This repository is for installing a vanilla K8S cluster on vsphere in an Infrastructure as code way (IaC). It is using Terraform for creating virtual machine and then kubespray to configure the cluster.
 
-> Ce dépot a pour but d'installer un cluster Kubernetes Vanilla sur une infrastructure VMWare de manière automatisée (Infrastructure as code way ou IaC).
+> Ce dépot a pour but d'installer un cluster Kubernetes Vanilla sur une infrastructure VMWare de manière automatisée (Infrastructure as code way ou IaC). Il utilise Terraform pour créér les machines virtuelles puis kubespray pour créér le cluster .
 
-
-## Some theory about components
-> Un peu de théorie à propos des composants
-
-In the f
-> Dans 
-
-
-<img src="https://github.com/mariefdu45/csi-vsphere/assets/96368239/cd1af133-08fd-4b21-affa-a512dd9c1f2a"  width="350"/>
-<img align="right" src="https://github.com/mariefdu45/csi-vsphere/assets/96368239/1e5fdd77-e92a-4cb3-bc48-8a09d2588a8a"  width="600"/>
-
-
-## Installating on your cluster
 ### Prerequisite
 - A VSphere cluster
 - Linux workstation with kubectl, ansible and terraform
 
-### CPI and CSI Installation
+### Installation
 ```bash
 # Get repository
 git clone https://github.com/mariefdu45/vsphere.git
@@ -28,10 +15,15 @@ cd kubernetes-cluster
 cp templates_env/terraform.tfvars vms_creation_tf/
 cd vms_creation_tf
 ```
-- Customizing  terraform.tfvars
+Customizing  terraform.tfvars with your own values
   
 ```bash
 # vms deploy
 # using installation script
 ./configuration/main.sh install
+```
+
+### Uninstallation
+```bash
+./configuration/main.sh uninstall
 ```
