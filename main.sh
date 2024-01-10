@@ -11,7 +11,7 @@ then
 elif [[ $1 == uninstall ]]
 then
   ./vms_creation_tf/main.sh uninstall
-  ./cluster_creation_kubespray/main.sh uninstall
+  #./cluster_creation_kubespray/main.sh uninstall
 else
   echo "Error. Usage: main.sh install|uninstall"
 fi

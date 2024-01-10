@@ -10,6 +10,7 @@ then
     # Create virtual machines
     terraform init 
     terraform apply  -auto-approve
+    wait 120
    
     # get masters_list from terraform.tfvars and add public key of the managing worstation to masters's .ssh/authorized_keys file
     # initialize parameters
@@ -34,7 +35,12 @@ then
       # echo master$i'=("'${listname[0]}'" "'${listname[1]}'")' >> $working_dir/.masters_var.env
       echo ${listname[@]} >> $working_dir/.masters_var.env\
       # add public key of the managing worstation to masters's .ssh/authorized_keys file
-      sshpass -p "$vsphere_virtual_machine_template_user_password" ssh-copy-id -o StrictHostKeyChecking=no $(whoami)@$master_ip
+     #sshpass -p "$vsphere_virtual_machine_template_user_password" ssh-copy-id -o StrictHostKeyChecking=no $(whoami)@$master_ip
+     until ssh   -oBatchMode=yes $(whoami)@$master_ip ls
+     do
+       sshpass -p "$vsphere_virtual_machine_template_user_password" ssh-copy-id -o StrictHostKeyChecking=no $(whoami)@$master_ip
+       sleep 5
+     done
       ((i++))
     done
     echo ${masters_list[@]} > $working_dir/.masters_list_var.env

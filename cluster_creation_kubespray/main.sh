@@ -72,23 +72,23 @@ then
   echo  '        hosts: {}' >> $ansible_inventory
 
   # Configuring CNI
-  #if [[ k8s_cni==cilium ]]
-  #then sed -i 's/kube_network_plugin: calico/kube_network_plugin: cilium/g' $working_dir/kubespray/inventory/$k8s_cluster_name/group_vars/k8s_cluster/k8s-cluster.yml
-  #fi
+  if [[ k8s_cni==cilium ]]
+  then sed -i 's/kube_network_plugin: calico/kube_network_plugin: cilium/g' $working_dir/kubespray/inventory/$k8s_cluster_name/group_vars/k8s_cluster/k8s-cluster.yml
+  fi
   
   # Creating cluster
   cd $working_dir/kubespray
-  #ansible-playbook -i $working_dir/kubespray/inventory/$k8s_cluster_name/hosts.yaml  --become --become-user=root --user=$vsphere_virtual_machine_template_user --private-key /home/$vsphere_virtual_machine_template_user/.ssh/id_rsa $working_dir/kubespray/playbooks/cluster.yml
+  ansible-playbook -i $working_dir/kubespray/inventory/$k8s_cluster_name/hosts.yaml  --become --become-user=root --user=$vsphere_virtual_machine_template_user --private-key /home/$vsphere_virtual_machine_template_user/.ssh/id_rsa $working_dir/kubespray/playbooks/cluster.yml
   # Configuring kubeconfig
   # At this time, there is not LB then use first master
   k8s_lb=10.200.5.81 
   ssh $k8s_lb sudo cat /etc/kubernetes/admin.conf > /home/$vsphere_virtual_machine_template_user/.kube/config
-  sed -i 's/127.0.0.1:6443/$k8s_lb:6443/g' /home/$vsphere_virtual_machine_template_user/.kube/config
+  sed -i 's/127.0.0.1:6443/'$k8s_lb':6443/g' /home/$vsphere_virtual_machine_template_user/.kube/config
 
 
 elif [[ $1 == "uninstall" ]] 
 then
-    ansible-playbook -i inventory/$k8s_cluster_name/hosts.yaml  --become --become-user=root --user=vsphere_virtual_machine_template_user --private-key ~mfoucher/.ssh/id_rsa reset.yml
+    ansible-playbook -i inventory/$k8s_cluster_name/hosts.yaml  --become --become-user=root --user=vsphere_virtual_machine_template_user --private-key ~mfoucher/.ssh/id_rsa $working_dir/kubespray/playbooks/reset.yml
 else
     echo "Error. Usage: main.sh install|uninstall"
 fi
