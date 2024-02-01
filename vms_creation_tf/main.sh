@@ -1,10 +1,10 @@
-# !/bin/bash
+#!/bin/bash
 # kubernetes-cluster – Main Program
-# Version : January 03, 2024
+# Version : January 11, 2024
 # Author : mariefdu45@gmail.com
 #
 source variables.env
-cd $working_dir/vms_creation_tf
+cd $working_dir/vms_creation_tf || echo "working_dir must be defined"; exit 1
 if [[ $1 == "install" ]]
 then
     # Create virtual machines

@@ -1,3 +1,8 @@
+#!/bin/bash
+# kubernetes-cluster – Main Program
+# Version : January 30, 2024
+# Author : mariefdu45@gmail.com
+#
 vsphere_user                     = "
 vsphere_password                 = "
 vsphere_server                   = "
