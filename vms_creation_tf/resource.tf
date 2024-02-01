@@ -7,6 +7,7 @@ variable "vsphere_datastore" {}
 variable "vsphere_compute_cluster" {}
 variable "vsphere_network" {}
 variable "vsphere_virtual_machine_template" {}
+
 variable "system_folder" {}
 variable "system_domain" {}
 #variable "system_ipv4_start" {}
@@ -19,7 +20,7 @@ variable "masters_system_cores" {}
 variable "masters_system_cores_per_socket" {}
 variable "masters_system_memory" {}
 #variable "masters_system_disk1_size" {}
-variable "master-nodes" {
+variable "masters_nodes" {
   type = map(object({
     name     = string
     ip = string
@@ -32,7 +33,7 @@ variable "workers_system_cores" {}
 variable "workers_system_cores_per_socket" {}
 variable "workers_system_memory" {}
 #variable "workers_system_disk1_size" {}
-variable "worker-nodes" {
+variable "workers_nodes" {
   type = map(object({
     name     = string
     ip = string
@@ -44,7 +45,7 @@ variable "worker-nodes" {
 
 # Virtual Machine Resource for Masters
 resource "vsphere_virtual_machine" "master-instance" {
-  for_each = var.worker-nodes
+  for_each = var.masters_nodes
   # System
   #firmware  = "efi"
   guest_id  = data.vsphere_virtual_machine.template.guest_id
@@ -108,7 +109,7 @@ resource "vsphere_virtual_machine" "master-instance" {
 
 # Virtual Machine Resource for Workers
 resource "vsphere_virtual_machine" "worker-instance" {
-  for_each = var.master-nodes
+  for_each = var.workers_nodes
   # System
   #firmware  = "efi"
   guest_id  = data.vsphere_virtual_machine.template.guest_id
@@ -121,13 +122,13 @@ resource "vsphere_virtual_machine" "worker-instance" {
   datastore_id     = data.vsphere_datastore.datastore.id
 
   # CPU
-  num_cpus               = var.masters_system_cores
-  num_cores_per_socket   = var.masters_system_cores_per_socket
+  num_cpus               = var.workers_system_cores
+  num_cores_per_socket   = var.workers_system_cores_per_socket
   cpu_hot_add_enabled    = true
   cpu_hot_remove_enabled = true
 
   # Memory
-  memory                 = var.masters_system_memory
+  memory                 = var.workers_system_memory
   memory_hot_add_enabled = true
 
   # Network
@@ -167,4 +168,8 @@ resource "vsphere_virtual_machine" "worker-instance" {
     }
   }
 }
-
+output "workers_list" {
+  value = vsphere_virtual_machine.worker-instance[*]
+  sensitive = true
+  description = "workers_list"
+}
