@@ -4,7 +4,7 @@
 # Author : mariefdu45@gmail.com
 #
 source variables.env
-cd $working_dir/vms_creation_tf || echo "working_dir must be defined"; exit 1
+cd $working_dir/vms_creation_tf # To check ... || echo "working_dir must be defined"; exit 1
 if [[ $1 == "install" ]]
 then
     # Create virtual machines
