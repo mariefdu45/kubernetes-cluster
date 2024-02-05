@@ -8,7 +8,7 @@ This repository is for installing a vanilla K8S cluster on vsphere in an Infrast
 - A VSphere cluster
 - Linux workstation with kubectl, ansible and terraform
 
-### Get Files and customized them
+### Get Files
 ```bash
 cd <projects directory>
 # Get repository
@@ -18,15 +18,25 @@ cp templates_env/variables.env .
 cp templates_env/terraform.tfvars vms_creation_tf/
 ```
 
-Customizing  variables.env and vms_creation_tf/terraform.tfvars with your own values
+### Customizing  vms_creation_tf/terraform.tfvars for creating virtual machines with your own values
+- vcenter, admin user and password
+- datacenter, datastore, cluster, network
+- vm template, vm folder, network parameters for nodes
+- masters and workers  properties
+
+### Customizing  variables.env for creating kubernetes cluster with your own values
+- kubespray branch
+- sudo user name and password configured in the template
+- cluster name
+- cni of your choice
 
 ```bash
 source ./variables.env
 ```
 
-### using installation script
+### Using installation script
 ```bash
-./configuration/main.sh install
+./main.sh install
 ```
 
 ## Uninstalling vms
