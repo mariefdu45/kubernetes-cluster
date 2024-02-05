@@ -6,6 +6,7 @@
 if [[ $1 == install ]]
 then
   ./vms_creation_tf/main.sh install
+  sleep 60
   ./cluster_creation_kubespray/main.sh install
 elif [[ $1 == uninstall ]]
 then
